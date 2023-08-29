@@ -12,7 +12,22 @@ jobs:
       - checkout # check out the code in the project directory
       - run: echo "hello world" # run the `echo` command
 
+  hello-job-setter:
+    executor: node # use the `node` executor defined above
+    steps:
+      - checkout # check out the code in the project directory
+      - run: echo "hello world" > hello.txt # run the `echo` command
+  hello-job-getter:
+    executor: node # use the `node` executor defined above
+    steps:
+      - checkout # check out the code in the project directory
+      - run: cat hello.txt # run the `echo` command
+
 workflows:
   my-workflow:
     jobs:
       - hello-job
+      - hello-job-setter
+      - hello-job-getter:
+          requires:
+            - hello-job-setter
