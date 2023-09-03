@@ -15,13 +15,28 @@ jobs:
   hello-job-setter:
     executor: node # use the `node` executor defined above
     steps:
-      - checkout # check out the code in the project directory
-      - run: echo "hello world" > hello.txt # run the `echo` command
+      - run: echo "hello world" > hello.txt
+      # Persist the specified paths (workspace/echo-output) into the workspace for use in downstream job.
+      - persist_to_workspace:
+          # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
+          # taken to be the root directory of the workspace.
+          root: .
+          # Must be relative path from root
+          paths:
+            - /
+
   hello-job-getter:
     executor: node # use the `node` executor defined above
     steps:
-      - checkout # check out the code in the project directory
-      - run: cat hello.txt # run the `echo` command
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: .
+      - run: |
+          if [[ `cat hello.txt` == "hello world" ]]; then
+            echo "It worked!";
+          else
+            echo "Nope!"; exit 1
+          fi
 
 workflows:
   my-workflow:
