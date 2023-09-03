@@ -23,7 +23,7 @@ jobs:
           root: .
           # Must be relative path from root
           paths:
-            - /
+            - ./
 
   hello-job-getter:
     executor: node # use the `node` executor defined above
