@@ -42,7 +42,7 @@ workflows:
   my-workflow:
     jobs:
       - hello-job
-      - hello-job-setter
-      - hello-job-getter:
+      - hello-job-getter
+      - hello-job-setter:
           requires:
-            - hello-job-setter
+            - hello-job-getter
